@@ -44,13 +44,13 @@ class DraftListView(LoginRequiredMixin, ListView):
     redirect_field_name = 'blog/post_list.html'
     model = Post
     def get_queryset(self):
-        return Post.objects.filter(published_date__isnull=True).order_by('created_date')
+        return Post.objects.filter(published_date__isnull=True).order_by('create_date')
 
 
 @login_required
 def post_publish(request, pk):
     post = get_object_or_404(Post, pk=pk)
-    post.publish
+    post.publish()
     return redirect('post_detail', pk=pk)
 
 
@@ -72,7 +72,7 @@ def add_comment_to_post(request, pk):
 @login_required
 def comment_approve(request, pk):
     comment = get_object_or_404(Comment, pk=pk)
-    comment_approve()
+    comment.approve()
     return redirect('post_detail', pk=comment.post.pk)
 
 @login_required
